@@ -8,10 +8,16 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # MySQL configuration
-app.config['MYSQL_HOST'] = 'localhost'
+'''app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'c@lient098'
 app.config['MYSQL_DB'] = 'blood_bank_db'
+'''
+
+app.config['MYSQL_HOST'] = os.environ.get("MYSQL_HOST", "localhost")
+app.config['MYSQL_USER'] = os.environ.get("MYSQL_USER", "root")
+app.config['MYSQL_PASSWORD'] = os.environ.get("MYSQL_PASSWORD", "")
+app.config['MYSQL_DB'] = os.environ.get("MYSQL_DB", "blood_bank_db")
 
 mysql = MySQL(app)
 
@@ -692,5 +698,12 @@ def view_campaigns():
 
 
 # ---------- ENTRY POINT ----------
+'''if __name__ == '__main__':
+    app.run(debug=True)'''
+
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port, debug=True)
+
